@@ -1,0 +1,155 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  customer
+  moderator
+  admin
+}
+
+enum OrderStatus {
+  pending
+  confirmed
+  shipped
+  delivered
+  cancelled
+}
+
+enum PaymentStatus {
+  pending
+  paid
+  failed
+  refunded
+}
+
+model Brand {
+  id        Int       @id @default(autoincrement())
+  name      String    @unique
+  logoUrl   String?
+  createdAt DateTime  @default(now())
+  products  Product[]
+}
+
+model Category {
+  id        Int        @id @default(autoincrement())
+  name      String
+  slug      String?    @unique
+  parentId  Int?
+  parent    Category?  @relation("CategoryToCategory", fields: [parentId], references: [id])
+  children  Category[] @relation("CategoryToCategory")
+  products  Product[]
+}
+
+model Product {
+  id          Int              @id @default(autoincrement())
+  name        String
+  brandId     Int?
+  brand       Brand?           @relation(fields: [brandId], references: [id])
+  categoryId  Int?
+  category    Category?        @relation(fields: [categoryId], references: [id])
+  description String?
+  basePrice   Decimal?
+  sku         String?          @unique
+  isActive    Boolean          @default(true)
+  scrapedFrom String?
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  variants    ProductVariant[]
+  images      ProductImage[]
+}
+
+model ProductVariant {
+  id            Int      @id @default(autoincrement())
+  productId     Int
+  product       Product  @relation(fields: [productId], references: [id])
+  size          Decimal?
+  color         String?
+  stockQuantity Int      @default(0)
+  price         Decimal?
+  sku           String?  @unique
+  createdAt     DateTime @default(now())
+  orderItems    OrderItem[]
+  carts         ShoppingCart[]
+}
+
+model ProductImage {
+  id           Int      @id @default(autoincrement())
+  productId    Int
+  product      Product  @relation(fields: [productId], references: [id])
+  imageUrl     String
+  altText      String?
+  isPrimary    Boolean  @default(false)
+  displayOrder Int      @default(0)
+}
+
+model User {
+  id            Int       @id @default(autoincrement())
+  email         String    @unique
+  passwordHash  String
+  firstName     String?
+  lastName      String?
+  role          Role      @default(customer)
+  isActive      Boolean   @default(true)
+  emailVerified Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  sessions      UserSession[]
+  orders        Order[]
+  carts         ShoppingCart[]
+}
+
+model UserSession {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  tokenHash String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+}
+
+model Order {
+  id            Int           @id @default(autoincrement())
+  userId        Int
+  user          User          @relation(fields: [userId], references: [id])
+  orderNumber   String        @unique
+  status        OrderStatus   @default(pending)
+  totalAmount   Decimal
+  shippingAddr  String?
+  billingAddr   String?
+  paymentMethod String?
+  paymentStatus PaymentStatus @default(pending)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  items         OrderItem[]
+}
+
+model OrderItem {
+  id               Int            @id @default(autoincrement())
+  orderId          Int
+  order            Order          @relation(fields: [orderId], references: [id])
+  productVariantId Int
+  variant          ProductVariant @relation(fields: [productVariantId], references: [id])
+  quantity         Int
+  unitPrice        Decimal
+  totalPrice       Decimal
+  createdAt        DateTime       @default(now())
+}
+
+model ShoppingCart {
+  id               Int            @id @default(autoincrement())
+  userId           Int
+  user             User           @relation(fields: [userId], references: [id])
+  productVariantId Int
+  variant          ProductVariant @relation(fields: [productVariantId], references: [id])
+  quantity         Int
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+
+  @@unique([userId, productVariantId])
+}
