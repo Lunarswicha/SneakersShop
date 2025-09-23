@@ -13,6 +13,9 @@ export default function CheckoutPage() {
   const [items, setItems] = useState<any[]>([]);
   const [total, setTotal] = useState(0);
   const [processing, setProcessing] = useState(false);
+  const [paymentStatus, setPaymentStatus] = useState<'processing' | 'success' | 'failed'>('processing');
+  const [orderId, setOrderId] = useState<string | null>(null);
+  const [amount, setAmount] = useState<string | null>(null);
 
   useEffect(() => {
     if (!loading) {
@@ -94,7 +97,7 @@ export default function CheckoutPage() {
     );
   }
 
-  // Show checkout form
+  // Show checkout form initially
   if (paymentStatus === 'processing' && !processing) {
     return (
       <section className="space-y-8 animate-fade-in-up">
