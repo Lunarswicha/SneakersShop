@@ -27,17 +27,47 @@ router.get('/', async (req, res) => {
       try {
         const product = await prisma.product.findUnique({
           where: { id: item.productId },
-          include: { images: true, brand: true }
+          include: { 
+            images: { where: { isPrimary: true }, take: 1 },
+            brand: true 
+          }
         });
-        return {
-          ...item,
-          product: product || { name: 'Unknown Product', basePrice: 0 }
-        };
+        
+        if (product) {
+          return {
+            ...item,
+            product: {
+              id: product.id,
+              name: product.name,
+              basePrice: product.basePrice,
+              images: product.images,
+              brand: product.brand
+            }
+          };
+        } else {
+          console.error(`Product with ID ${item.productId} not found`);
+          return {
+            ...item,
+            product: { 
+              id: item.productId,
+              name: 'Product Not Found', 
+              basePrice: 0,
+              images: [],
+              brand: null
+            }
+          };
+        }
       } catch (error) {
         console.error('Error fetching product:', error);
         return {
           ...item,
-          product: { name: 'Unknown Product', basePrice: 0 }
+          product: { 
+            id: item.productId,
+            name: 'Error Loading Product', 
+            basePrice: 0,
+            images: [],
+            brand: null
+          }
         };
       }
     })
