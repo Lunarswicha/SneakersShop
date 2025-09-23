@@ -50,9 +50,20 @@ export default function ProductDetail({ params }: any) {
         }
       } else {
         // Utiliser l'API de session pour les utilisateurs non connectés ou les produits sans variantes
+        // Récupérer l'ID de session depuis localStorage
+        let sessionId = localStorage.getItem('sessionId');
+        if (!sessionId) {
+          sessionId = 'session-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+          localStorage.setItem('sessionId', sessionId);
+        }
+        
         const response = await fetch(`${API_BASE}/cart-session`, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 
+            'Content-Type': 'application/json',
+            'X-Session-ID': sessionId
+          },
+          credentials: 'include',
           body: JSON.stringify({ 
             productId: Number(product.id), 
             quantity: Number(qty),
@@ -63,6 +74,10 @@ export default function ProductDetail({ params }: any) {
         
         if (response.ok) {
           const result = await response.json();
+          // Mettre à jour l'ID de session si nécessaire
+          if (result.sessionId && result.sessionId !== sessionId) {
+            localStorage.setItem('sessionId', result.sessionId);
+          }
           alert(`Added to cart! (${result.cartCount} items total)`);
         } else {
           const errorText = await response.text();

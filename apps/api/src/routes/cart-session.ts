@@ -9,11 +9,19 @@ const sessionCarts = new Map<string, any[]>();
 
 // Generate a simple session ID
 function getSessionId(req: any): string {
-  let sessionId = req.headers['x-session-id'] as string;
+  // Try to get session ID from cookie first
+  let sessionId = req.cookies?.sessionId as string;
+  
   if (!sessionId) {
-    // Use a default session ID for demo purposes
-    sessionId = 'demo-session-123';
+    // Try to get from header
+    sessionId = req.headers['x-session-id'] as string;
   }
+  
+  if (!sessionId) {
+    // Generate a new session ID
+    sessionId = 'session-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+  }
+  
   return sessionId;
 }
 
@@ -73,6 +81,14 @@ router.get('/', async (req, res) => {
     })
   );
   
+  // Set session cookie
+  res.cookie('sessionId', sessionId, {
+    httpOnly: true,
+    secure: false, // Set to true in production with HTTPS
+    sameSite: 'lax',
+    maxAge: 24 * 60 * 60 * 1000 // 24 hours
+  });
+  
   res.json({ items: cartWithDetails, sessionId });
 });
 
@@ -116,6 +132,14 @@ router.post('/', async (req, res) => {
   }
   
   sessionCarts.set(sessionId, cart);
+  
+  // Set session cookie
+  res.cookie('sessionId', sessionId, {
+    httpOnly: true,
+    secure: false, // Set to true in production with HTTPS
+    sameSite: 'lax',
+    maxAge: 24 * 60 * 60 * 1000 // 24 hours
+  });
   
   res.json({ 
     success: true, 

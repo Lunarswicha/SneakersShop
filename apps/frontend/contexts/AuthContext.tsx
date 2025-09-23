@@ -57,12 +57,44 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (response.ok) {
         const userData = await response.json();
         setUser(userData);
+        
+        // Synchroniser le panier de session vers le panier d'authentification
+        await syncSessionCart();
+        
         return true;
       }
       return false;
     } catch (error) {
       console.error('Login failed:', error);
       return false;
+    }
+  };
+
+  const syncSessionCart = async () => {
+    try {
+      // Récupérer le panier de session
+      const sessionResponse = await fetch(`${API_BASE}/cart-session`, {
+        credentials: 'include'
+      });
+      
+      if (sessionResponse.ok) {
+        const sessionData = await sessionResponse.json();
+        const sessionItems = sessionData.items || [];
+        
+        if (sessionItems.length > 0) {
+          // Synchroniser avec le panier d'authentification
+          await fetch(`${API_BASE}/cart-sync/sync`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+            body: JSON.stringify({ sessionCartItems: sessionItems })
+          });
+        }
+      }
+    } catch (error) {
+      console.error('Failed to sync session cart:', error);
     }
   };
 
