@@ -99,16 +99,30 @@ export default function CartPage() {
   
   async function checkout() {
     try {
-      if (!user) {
-        // Pour les utilisateurs non connectés, rediriger vers la page de connexion
-        router.push('/login?redirect=/cart');
+      if (items.length === 0) {
+        alert('Your cart is empty!');
         return;
       }
 
-      // Create payment intent
-      const response = await fetch(`${API_BASE}/payments/create`, {
+      // Calculate total
+      const total = items.reduce((s, i) => {
+        return s + Number(i.product?.basePrice || 0) * i.quantity;
+      }, 0);
+
+      // Create fake payment session
+      const response = await fetch(`${API_BASE}/payments/create-session`, {
         method: 'POST',
-        credentials: 'include'
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ 
+          cartItems: items.map(item => ({
+            productId: item.productId,
+            quantity: item.quantity,
+            size: item.size,
+            color: item.color,
+            price: item.product?.basePrice || 0
+          }))
+        })
       });
       
       if (!response.ok) {
@@ -120,6 +134,7 @@ export default function CartPage() {
       // Redirect to payment page
       window.location.href = `/checkout?amount=${amount}&clientSecret=${clientSecret}`;
     } catch (error) {
+      console.error('Checkout error:', error);
       alert('Failed to proceed to checkout. Please try again.');
     }
   }

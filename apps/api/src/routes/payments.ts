@@ -28,7 +28,7 @@ router.post('/create-session', async (req, res) => {
     }
     
     const amount = sessionCart.reduce((sum: number, item: any) => {
-      return sum + Number(item.product?.basePrice || 0) * item.quantity;
+      return sum + Number(item.price || 0) * item.quantity;
     }, 0);
     
     const clientSecret = 'fake_cs_session_' + Date.now();
