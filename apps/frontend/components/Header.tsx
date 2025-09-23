@@ -72,13 +72,22 @@ export default function Header() {
                       Orders
                     </Link>
                     {user.role === 'admin' && (
-                      <Link
-                        href="/admin/products"
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                        onClick={() => setShowUserMenu(false)}
-                      >
-                        Admin Panel
-                      </Link>
+                      <>
+                        <Link
+                          href="/admin/products"
+                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                          onClick={() => setShowUserMenu(false)}
+                        >
+                          Admin Panel
+                        </Link>
+                        <Link
+                          href="/admin/inventory"
+                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                          onClick={() => setShowUserMenu(false)}
+                        >
+                          📦 Gestion des Stocks
+                        </Link>
+                      </>
                     )}
                   </div>
                   <div className="border-t border-gray-100 py-1">

@@ -1,8 +1,10 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { API_BASE } from '../../../lib/api';
+import { useAuth } from '../../../contexts/AuthContext';
 
 export default function ProductDetail({ params }: any) {
+  const { user, loading } = useAuth();
   const [product, setProduct] = useState<any>(null);
   const [selectedSize, setSelectedSize] = useState<number | ''>('');
   const [selectedColor, setSelectedColor] = useState<string | ''>('');
@@ -21,23 +23,51 @@ export default function ProductDetail({ params }: any) {
 
   async function addToCart() {
     try {
-      const response = await fetch(`${API_BASE}/cart-session`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          productId: Number(product.id), 
-          quantity: Number(qty),
-          size: selectedSize ? String(selectedSize) : 'One Size',
-          color: selectedColor || 'Default'
-        })
-      });
-      
-      if (response.ok) {
-        const result = await response.json();
-        alert(`Added to cart! (${result.cartCount} items total)`);
+      // Si l'utilisateur est connecté et que le produit a des variantes, utiliser l'API d'authentification
+      if (user && product.variants && product.variants.length > 0) {
+        const variant = product.variants.find((v: any) => 
+          v.size === Number(selectedSize) && v.color === selectedColor
+        );
+        
+        if (!variant) {
+          alert('Selected size and color combination not available');
+          return;
+        }
+
+        const response = await fetch(`${API_BASE}/cart`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({ productVariantId: variant.id, quantity: Number(qty) })
+        });
+        
+        if (response.ok) {
+          const result = await response.json();
+          alert(`Added to cart! (${result.length || 0} items total)`);
+        } else {
+          const errorText = await response.text();
+          alert(`Failed to add to cart: ${errorText}`);
+        }
       } else {
-        const errorText = await response.text();
-        alert(`Failed to add to cart: ${errorText}`);
+        // Utiliser l'API de session pour les utilisateurs non connectés ou les produits sans variantes
+        const response = await fetch(`${API_BASE}/cart-session`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ 
+            productId: Number(product.id), 
+            quantity: Number(qty),
+            size: selectedSize ? String(selectedSize) : 'One Size',
+            color: selectedColor || 'Default'
+          })
+        });
+        
+        if (response.ok) {
+          const result = await response.json();
+          alert(`Added to cart! (${result.cartCount} items total)`);
+        } else {
+          const errorText = await response.text();
+          alert(`Failed to add to cart: ${errorText}`);
+        }
       }
     } catch (e: any) {
       alert(`Failed to add to cart: ${e.message}`);

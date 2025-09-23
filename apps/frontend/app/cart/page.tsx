@@ -11,50 +11,82 @@ export default function CartPage() {
   const [sessionId, setSessionId] = useState<string>('');
   
   useEffect(() => { 
-    if (user) {
-      fetchCart();
-    }
+    fetchCart();
   }, [user]);
   
   async function fetchCart() {
     try {
-      const response = await fetch(`${API_BASE}/cart`, {
-        credentials: 'include'
-      });
-      const data = await response.json();
-      setItems(data || []);
+      if (user) {
+        // Utiliser l'API d'authentification pour les utilisateurs connectés
+        const response = await fetch(`${API_BASE}/cart`, {
+          credentials: 'include'
+        });
+        const data = await response.json();
+        setItems(data || []);
+      } else {
+        // Utiliser l'API de session pour les utilisateurs non connectés
+        const response = await fetch(`${API_BASE}/cart-session`, {
+          credentials: 'include'
+        });
+        const data = await response.json();
+        setItems(data.items || []);
+        setSessionId(data.sessionId || '');
+      }
     } catch (error) {
       setItems([]);
     }
   }
   
-  async function removeItem(variantId: number) {
+  async function removeItem(itemId: number) {
     try {
-      await fetch(`${API_BASE}/cart/${variantId}`, { 
-        method: 'DELETE',
-        credentials: 'include'
-      });
+      if (user) {
+        await fetch(`${API_BASE}/cart/${itemId}`, { 
+          method: 'DELETE',
+          credentials: 'include'
+        });
+      } else {
+        await fetch(`${API_BASE}/cart-session/${itemId}`, { 
+          method: 'DELETE',
+          credentials: 'include'
+        });
+      }
       fetchCart(); // Refresh cart
     } catch (error) {
       alert('Failed to remove item');
     }
   }
   
-  async function updateQuantity(variantId: number, quantity: number) {
+  async function updateQuantity(itemId: number, quantity: number) {
     try {
-      await fetch(`${API_BASE}/cart`, { 
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify({ productVariantId: variantId, quantity })
-      });
+      if (user) {
+        await fetch(`${API_BASE}/cart`, { 
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({ productVariantId: itemId, quantity })
+        });
+      } else {
+        await fetch(`${API_BASE}/cart-session`, { 
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({ itemId: itemId, quantity })
+        });
+      }
       fetchCart(); // Refresh cart
     } catch (error) {
       alert('Failed to update quantity');
     }
   }
   
-  const total = items.reduce((s, i) => s + Number(i.variant?.price || i.variant?.product?.basePrice || 0) * i.quantity, 0);
+  const total = items.reduce((s, i) => {
+    // Pour les articles du panier d'authentification (avec variant)
+    if (i.variant) {
+      return s + Number(i.variant.price || i.variant.product?.basePrice || 0) * i.quantity;
+    }
+    // Pour les articles du panier de session (avec product)
+    return s + Number(i.product?.basePrice || 0) * i.quantity;
+  }, 0);
   
   async function checkout() {
     try {
@@ -89,8 +121,8 @@ export default function CartPage() {
     );
   }
 
-  // Show login prompt if not authenticated
-  if (!user) {
+  // Show login prompt if not authenticated and no items in session cart
+  if (!user && items.length === 0) {
     return (
       <section className="space-y-8 animate-fade-in-up">
         <div className="text-center py-16">
@@ -102,13 +134,13 @@ export default function CartPage() {
           <h3 className="text-xl font-semibold text-gray-900 mb-2">Please sign in</h3>
           <p className="text-gray-600 mb-6">You need to be logged in to view your cart.</p>
           <div className="space-x-4">
-            <button 
+            <button
               onClick={() => router.push('/login')}
               className="btn-primary ripple"
             >
               Sign In
             </button>
-            <button 
+            <button
               onClick={() => router.push('/register')}
               className="btn-secondary ripple"
             >
@@ -154,10 +186,10 @@ export default function CartPage() {
               >
                 <div className="flex items-center gap-6">
                   <div className="w-20 h-20 rounded-lg overflow-hidden bg-gray-100 flex items-center justify-center">
-                    {i.variant?.product?.images?.[0] ? (
+                    {(i.variant?.product?.images?.[0] || i.product?.images?.[0]) ? (
                       <img 
-                        src={i.variant.product.images[0].imageUrl} 
-                        alt={i.variant.product.name}
+                        src={i.variant?.product?.images?.[0]?.imageUrl || i.product?.images?.[0]?.imageUrl} 
+                        alt={i.variant?.product?.name || i.product?.name || 'Product'}
                         className="w-full h-full object-cover"
                       />
                     ) : (
@@ -168,11 +200,11 @@ export default function CartPage() {
                   </div>
                   
                   <div className="flex-1 space-y-2">
-                    <h3 className="text-lg font-semibold">{i.variant?.product?.name || 'Product'}</h3>
+                    <h3 className="text-lg font-semibold">{i.variant?.product?.name || i.product?.name || 'Product'}</h3>
                     <div className="flex items-center gap-4 text-sm text-gray-600">
-                      <span>Size: {i.variant?.size || 'N/A'}</span>
+                      <span>Size: {i.variant?.size || i.size || 'N/A'}</span>
                       <span>•</span>
-                      <span>Color: {i.variant?.color || 'N/A'}</span>
+                      <span>Color: {i.variant?.color || i.color || 'N/A'}</span>
                       <span>•</span>
                       <span>Qty: {i.quantity}</span>
                     </div>
@@ -180,16 +212,22 @@ export default function CartPage() {
                   
                   <div className="text-right">
                     <div className="text-xl font-bold text-gradient">
-                      {Number(i.variant?.price || i.variant?.product?.basePrice || 0) * i.quantity}€
+                      {(() => {
+                        const price = i.variant?.price || i.variant?.product?.basePrice || i.product?.basePrice || 0;
+                        return Number(price) * i.quantity;
+                      })()}€
                     </div>
                     <div className="text-sm text-gray-500">
-                      {Number(i.variant?.price || i.variant?.product?.basePrice || 0)}€ each
+                      {(() => {
+                        const price = i.variant?.price || i.variant?.product?.basePrice || i.product?.basePrice || 0;
+                        return Number(price);
+                      })()}€ each
                     </div>
                   </div>
                   
                   <div className="flex items-center gap-2">
                     <button 
-                      onClick={() => updateQuantity(i.productVariantId, i.quantity - 1)}
+                      onClick={() => updateQuantity(i.productVariantId || i.id, i.quantity - 1)}
                       className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center"
                     >
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -198,7 +236,7 @@ export default function CartPage() {
                     </button>
                     <span className="w-8 text-center">{i.quantity}</span>
                     <button 
-                      onClick={() => updateQuantity(i.productVariantId, i.quantity + 1)}
+                      onClick={() => updateQuantity(i.productVariantId || i.id, i.quantity + 1)}
                       className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center"
                     >
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -208,7 +246,7 @@ export default function CartPage() {
                   </div>
                   
                   <button 
-                    onClick={() => removeItem(i.productVariantId)}
+                    onClick={() => removeItem(i.productVariantId || i.id)}
                     className="text-red-500 hover:text-red-700 p-2"
                   >
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
