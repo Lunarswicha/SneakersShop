@@ -18,46 +18,36 @@ export default function CartPage() {
     try {
       console.log('🛒 Fetching cart, user:', user ? 'logged in' : 'not logged in');
       
-      if (user) {
-        // Utiliser l'API d'authentification pour les utilisateurs connectés
-        const response = await fetch(`${API_BASE}/cart`, {
-          credentials: 'include'
-        });
-        const data = await response.json();
-        console.log('🔐 Authenticated cart data:', data);
-        setItems(data || []);
-      } else {
-        // Utiliser l'API de session pour les utilisateurs non connectés
-        console.log('👤 Fetching session cart from:', `${API_BASE}/cart-session`);
-        
-        // Récupérer l'ID de session depuis localStorage
-        let sessionId = localStorage.getItem('sessionId');
-        if (!sessionId) {
-          sessionId = 'session-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
-          localStorage.setItem('sessionId', sessionId);
-        }
-        
-        const response = await fetch(`${API_BASE}/cart-session`, {
-          credentials: 'include',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-Session-ID': sessionId
-          }
-        });
-        
-        console.log('👤 Session cart response status:', response.status);
-        const data = await response.json();
-        console.log('👤 Session cart data:', data);
-        console.log('👤 Items count:', data.items?.length || 0);
-        
-        // Mettre à jour l'ID de session si nécessaire
-        if (data.sessionId && data.sessionId !== sessionId) {
-          localStorage.setItem('sessionId', data.sessionId);
-        }
-        
-        setItems(data.items || []);
-        setSessionId(data.sessionId || sessionId);
+      // Pour l'instant, utiliser toujours l'API de session pour simplifier
+      console.log('👤 Fetching session cart from:', `${API_BASE}/cart-session`);
+      
+      // Récupérer l'ID de session depuis localStorage
+      let sessionId = localStorage.getItem('sessionId');
+      if (!sessionId) {
+        sessionId = 'session-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+        localStorage.setItem('sessionId', sessionId);
       }
+      
+      const response = await fetch(`${API_BASE}/cart-session`, {
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Session-ID': sessionId
+        }
+      });
+      
+      console.log('👤 Session cart response status:', response.status);
+      const data = await response.json();
+      console.log('👤 Session cart data:', data);
+      console.log('👤 Items count:', data.items?.length || 0);
+      
+      // Mettre à jour l'ID de session si nécessaire
+      if (data.sessionId && data.sessionId !== sessionId) {
+        localStorage.setItem('sessionId', data.sessionId);
+      }
+      
+      setItems(data.items || []);
+      setSessionId(data.sessionId || sessionId);
     } catch (error) {
       console.error('❌ Error fetching cart:', error);
       setItems([]);
@@ -66,21 +56,14 @@ export default function CartPage() {
   
   async function removeItem(itemId: number) {
     try {
-      if (user) {
-        await fetch(`${API_BASE}/cart/${itemId}`, { 
-          method: 'DELETE',
-          credentials: 'include'
-        });
-      } else {
-        const sessionId = localStorage.getItem('sessionId');
-        await fetch(`${API_BASE}/cart-session/${itemId}`, { 
-          method: 'DELETE',
-          credentials: 'include',
-          headers: {
-            'X-Session-ID': sessionId || ''
-          }
-        });
-      }
+      const sessionId = localStorage.getItem('sessionId');
+      await fetch(`${API_BASE}/cart-session/${itemId}`, { 
+        method: 'DELETE',
+        credentials: 'include',
+        headers: {
+          'X-Session-ID': sessionId || ''
+        }
+      });
       fetchCart(); // Refresh cart
     } catch (error) {
       alert('Failed to remove item');
@@ -89,25 +72,16 @@ export default function CartPage() {
   
   async function updateQuantity(itemId: number, quantity: number) {
     try {
-      if (user) {
-        await fetch(`${API_BASE}/cart`, { 
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          credentials: 'include',
-          body: JSON.stringify({ productVariantId: itemId, quantity })
-        });
-      } else {
-        const sessionId = localStorage.getItem('sessionId');
-        await fetch(`${API_BASE}/cart-session`, { 
-          method: 'POST',
-          headers: { 
-            'Content-Type': 'application/json',
-            'X-Session-ID': sessionId || ''
-          },
-          credentials: 'include',
-          body: JSON.stringify({ itemId: itemId, quantity })
-        });
-      }
+      const sessionId = localStorage.getItem('sessionId');
+      await fetch(`${API_BASE}/cart-session`, { 
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'X-Session-ID': sessionId || ''
+        },
+        credentials: 'include',
+        body: JSON.stringify({ itemId: itemId, quantity })
+      });
       fetchCart(); // Refresh cart
     } catch (error) {
       alert('Failed to update quantity');
