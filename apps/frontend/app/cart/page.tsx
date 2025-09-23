@@ -90,6 +90,12 @@ export default function CartPage() {
   
   async function checkout() {
     try {
+      if (!user) {
+        // Pour les utilisateurs non connectés, rediriger vers la page de connexion
+        router.push('/login?redirect=/cart');
+        return;
+      }
+
       // Create payment intent
       const response = await fetch(`${API_BASE}/payments/create`, {
         method: 'POST',

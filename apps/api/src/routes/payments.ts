@@ -16,6 +16,29 @@ router.post('/create', requireAuth, async (req, res) => {
   res.json({ clientSecret, amount });
 });
 
+// Route pour les utilisateurs non connectés (panier de session)
+router.post('/create-session', async (req, res) => {
+  try {
+    // Simuler la récupération du panier de session
+    // Dans un vrai système, vous récupéreriez le panier depuis la session
+    const sessionCart = req.body.cartItems || [];
+    
+    if (sessionCart.length === 0) {
+      return res.status(400).json({ error: 'Cart is empty' });
+    }
+    
+    const amount = sessionCart.reduce((sum: number, item: any) => {
+      return sum + Number(item.product?.basePrice || 0) * item.quantity;
+    }, 0);
+    
+    const clientSecret = 'fake_cs_session_' + Date.now();
+    res.json({ clientSecret, amount });
+  } catch (error) {
+    console.error('Error creating session payment:', error);
+    res.status(500).json({ error: 'Failed to create payment' });
+  }
+});
+
 router.post('/confirm', requireAuth, async (req, res) => {
   const user = (req as any).user;
   const cart = await prisma.shoppingCart.findMany({

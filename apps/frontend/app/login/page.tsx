@@ -1,12 +1,13 @@
 'use client';
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '../../contexts/AuthContext';
 import { useNotification } from '../../contexts/NotificationContext';
 
 export default function LoginPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { login } = useAuth();
   const { showNotification } = useNotification();
   const [formData, setFormData] = useState({
@@ -25,7 +26,8 @@ export default function LoginPage() {
     
     if (success) {
       showNotification('Welcome back! You are now logged in.', 'success');
-      router.push('/');
+      const redirectTo = searchParams.get('redirect') || '/';
+      router.push(redirectTo);
     } else {
       setError('Invalid email or password');
       showNotification('Login failed. Please check your credentials.', 'error');

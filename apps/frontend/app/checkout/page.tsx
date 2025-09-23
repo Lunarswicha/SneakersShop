@@ -15,30 +15,41 @@ export default function CheckoutPage() {
   const [processing, setProcessing] = useState(false);
 
   useEffect(() => {
-    if (!loading && !user) {
-      router.push('/login');
-      return;
-    }
-    if (user) {
+    if (!loading) {
       fetchCart();
     }
   }, [user, loading]);
 
   async function fetchCart() {
     try {
-      const response = await fetch(`${API_BASE}/cart`, {
-        credentials: 'include'
-      });
-      const data = await response.json();
-      setItems(data || []);
-      
-      const cartTotal = data.reduce((s: number, i: any) => {
-        if (i.variant) {
-          return s + Number(i.variant.price || i.variant.product?.basePrice || 0) * i.quantity;
-        }
-        return s + Number(i.product?.basePrice || 0) * i.quantity;
-      }, 0);
-      setTotal(cartTotal);
+      if (user) {
+        // Utiliser l'API d'authentification pour les utilisateurs connectés
+        const response = await fetch(`${API_BASE}/cart`, {
+          credentials: 'include'
+        });
+        const data = await response.json();
+        setItems(data || []);
+        
+        const cartTotal = data.reduce((s: number, i: any) => {
+          if (i.variant) {
+            return s + Number(i.variant.price || i.variant.product?.basePrice || 0) * i.quantity;
+          }
+          return s + Number(i.product?.basePrice || 0) * i.quantity;
+        }, 0);
+        setTotal(cartTotal);
+      } else {
+        // Utiliser l'API de session pour les utilisateurs non connectés
+        const response = await fetch(`${API_BASE}/cart-session`, {
+          credentials: 'include'
+        });
+        const data = await response.json();
+        setItems(data.items || []);
+        
+        const cartTotal = data.items.reduce((s: number, i: any) => {
+          return s + Number(i.product?.basePrice || 0) * i.quantity;
+        }, 0);
+        setTotal(cartTotal);
+      }
     } catch (error) {
       console.error('Failed to fetch cart:', error);
       setItems([]);
@@ -51,18 +62,24 @@ export default function CheckoutPage() {
       // Simuler un processus de paiement
       await new Promise(resolve => setTimeout(resolve, 2000));
       
-      // Créer la commande
-      const response = await fetch(`${API_BASE}/payments/confirm`, {
-        method: 'POST',
-        credentials: 'include'
-      });
+      if (user) {
+        // Créer la commande pour utilisateur connecté
+        const response = await fetch(`${API_BASE}/payments/confirm`, {
+          method: 'POST',
+          credentials: 'include'
+        });
 
-      if (response.ok) {
-        const order = await response.json();
-        showNotification('Payment successful! Your order has been confirmed.', 'success');
-        router.push(`/orders/${order.id}`);
+        if (response.ok) {
+          const order = await response.json();
+          showNotification('Payment successful! Your order has been confirmed.', 'success');
+          router.push(`/orders/${order.order.id}`);
+        } else {
+          throw new Error('Payment failed');
+        }
       } else {
-        throw new Error('Payment failed');
+        // Pour les utilisateurs non connectés, simuler une commande
+        showNotification('Payment successful! Your order has been confirmed.', 'success');
+        router.push('/');
       }
     } catch (error) {
       console.error('Payment error:', error);
@@ -83,9 +100,7 @@ export default function CheckoutPage() {
     );
   }
 
-  if (!user) {
-    return null; // Will redirect to login
-  }
+  // Pas de redirection automatique, on affiche la page pour tous les utilisateurs
 
   return (
     <section className="space-y-8 animate-fade-in-up">
