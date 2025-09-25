@@ -4,10 +4,10 @@ const prisma = new PrismaClient();
 
 async function testCart() {
   try {
-    console.log('🧪 Test du système de panier...\n');
+    console.log(' Test du syst�me de panier...\n');
 
-    // Test 1: Vérifier les produits avec variantes
-    console.log('📦 1. Test des produits avec variantes:');
+    // Test 1: V�rifier les produits avec variantes
+    console.log(' 1. Test des produits avec variantes:');
     const productsWithVariants = await prisma.product.findMany({
       where: {
         variants: {
@@ -32,13 +32,13 @@ async function testCart() {
       take: 3
     });
 
-    console.log(`   ✅ Produits avec variantes: ${productsWithVariants.length}`);
+    console.log(`    Produits avec variantes: ${productsWithVariants.length}`);
     productsWithVariants.forEach(product => {
       console.log(`   - ${product.name} (${product.brand?.name}): ${product.variants.length} variantes`);
     });
 
-    // Test 2: Vérifier les produits sans variantes
-    console.log('\n📦 2. Test des produits sans variantes:');
+    // Test 2: V�rifier les produits sans variantes
+    console.log('\n 2. Test des produits sans variantes:');
     const productsWithoutVariants = await prisma.product.findMany({
       where: {
         variants: {
@@ -53,38 +53,38 @@ async function testCart() {
       take: 3
     });
 
-    console.log(`   ✅ Produits sans variantes: ${productsWithoutVariants.length}`);
+    console.log(`    Produits sans variantes: ${productsWithoutVariants.length}`);
     productsWithoutVariants.forEach(product => {
       console.log(`   - ${product.name} (${product.brand?.name})`);
     });
 
-    // Test 3: Vérifier les utilisateurs
-    console.log('\n👤 3. Test des utilisateurs:');
+    // Test 3: V�rifier les utilisateurs
+    console.log('\n 3. Test des utilisateurs:');
     const users = await prisma.user.findMany({
       select: { id: true, email: true, role: true }
     });
-    console.log(`   ✅ Utilisateurs: ${users.length}`);
+    console.log(`    Utilisateurs: ${users.length}`);
     users.forEach(user => {
       console.log(`   - ${user.email} (${user.role})`);
     });
 
-    // Test 4: Vérifier les paniers existants
-    console.log('\n🛒 4. Test des paniers:');
+    // Test 4: V�rifier les paniers existants
+    console.log('\n 4. Test des paniers:');
     const cartItems = await prisma.shoppingCart.count();
-    console.log(`   ✅ Articles dans les paniers: ${cartItems}`);
+    console.log(`    Articles dans les paniers: ${cartItems}`);
 
-    console.log('\n✅ Test terminé avec succès !');
-    console.log('\n📋 Instructions pour tester le panier:');
+    console.log('\n Test termin� avec succ�s !');
+    console.log('\n Instructions pour tester le panier:');
     console.log('   1. Allez sur http://localhost:3000/products');
-    console.log('   2. Cliquez sur un produit pour voir les détails');
-    console.log('   3. Sélectionnez une taille et une couleur');
+    console.log('   2. Cliquez sur un produit pour voir les d�tails');
+    console.log('   3. S�lectionnez une taille et une couleur');
     console.log('   4. Cliquez sur "Add to cart"');
     console.log('   5. Allez sur http://localhost:3000/cart pour voir le panier');
     console.log('   6. Connectez-vous avec admin@example.com / admin123');
-    console.log('   7. Testez l\'ajout au panier en tant qu\'utilisateur connecté');
+    console.log('   7. Testez l\'ajout au panier en tant qu\'utilisateur connect�');
 
   } catch (error) {
-    console.error('❌ Erreur lors du test:', error);
+    console.error(' Erreur lors du test:', error);
   } finally {
     await prisma.$disconnect();
   }
