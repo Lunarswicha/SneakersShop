@@ -12,7 +12,7 @@ def parse(html: str):
         price_el = card.select_one('.price')
         img_el = card.select_one('img')
         name = name_el.get_text(strip=True) if name_el else 'Sneaker'
-        price = (price_el.get_text(strip=True) if price_el else '99').replace('€','').strip()
+        price = (price_el.get_text(strip=True) if price_el else '99').replace('','').strip()
         image = img_el.get('src', '') if img_el else ''
         yield {'name': name, 'brand': 'Unknown', 'category': 'sneakers', 'price': price or '99.00', 'image': image}
 

@@ -43,7 +43,7 @@ def fetch_sneaker_data(brand: str, page: int = 1, limit: int = 50) -> List[Dict[
             'x-rapidapi-host': RAPIDAPI_HOST
         }
         
-        print(f"🔍 Fetching {brand} sneakers (page {page})...")
+        print(f" Fetching {brand} sneakers (page {page})...")
         conn.request("GET", url, headers=headers)
         
         res = conn.getresponse()
@@ -52,14 +52,14 @@ def fetch_sneaker_data(brand: str, page: int = 1, limit: int = 50) -> List[Dict[
         if res.status == 200:
             response_data = json.loads(data.decode("utf-8"))
             products = response_data.get('data', [])
-            print(f"✅ Found {len(products)} {brand} products")
+            print(f"Found {len(products)} {brand} products")
             return products
         else:
-            print(f"❌ Error fetching {brand}: {res.status} - {data.decode('utf-8')}")
+            print(f"Error fetching {brand}: {res.status} - {data.decode('utf-8')}")
             return []
             
     except Exception as e:
-        print(f"❌ Exception fetching {brand}: {e}")
+        print(f"Exception fetching {brand}: {e}")
         return []
     finally:
         conn.close()
@@ -97,7 +97,7 @@ def process_sneaker_data(products: List[Dict[str, Any]], brand: str) -> List[Dic
                 processed.append(processed_product)
                 
         except Exception as e:
-            print(f"⚠️ Error processing product: {e}")
+            print(f"Error processing product: {e}")
             continue
     
     return processed
@@ -105,7 +105,7 @@ def process_sneaker_data(products: List[Dict[str, Any]], brand: str) -> List[Dic
 def save_to_csv(data: List[Dict[str, Any]], filename: str):
     """Save processed data to CSV"""
     if not data:
-        print(f"⚠️ No data to save to {filename}")
+        print(f"No data to save to {filename}")
         return
         
     fieldnames = [
@@ -119,17 +119,17 @@ def save_to_csv(data: List[Dict[str, Any]], filename: str):
         writer.writeheader()
         writer.writerows(data)
     
-    print(f"💾 Saved {len(data)} products to {filename}")
+    print(f"Saved {len(data)} products to {filename}")
 
 def main():
     """Main function to fetch all sneaker data"""
-    print("🚀 Starting KicksCrew data fetch...")
+    print("Starting KicksCrew data fetch...")
     
     all_products = []
     
     # Fetch data for each brand
     for db_brand, api_brand in BRAND_MAPPINGS.items():
-        print(f"\n📦 Processing {db_brand}...")
+        print(f"\n Processing {db_brand}...")
         
         # Try multiple pages for each brand
         for page in range(1, 4):  # Try first 3 pages
@@ -148,7 +148,7 @@ def main():
             if len(processed) >= 10:
                 break
     
-    print(f"\n📊 Total products fetched: {len(all_products)}")
+    print(f"\nTotal products fetched: {len(all_products)}")
     
     # Save to CSV
     output_file = "real_sneaker_data.csv"
@@ -159,12 +159,12 @@ def main():
     sample_data = all_products[:20]  # First 20 products
     save_to_csv(sample_data, sample_file)
     
-    print(f"\n🎉 Data fetch complete!")
-    print(f"📁 Full data: {output_file}")
-    print(f"📁 Sample data: {sample_file}")
+    print(f"\nData fetch complete!")
+    print(f"Full data: {output_file}")
+    print(f"Sample data: {sample_file}")
     
     # Print some examples
-    print(f"\n📋 Sample products:")
+    print(f"\nSample products:")
     for i, product in enumerate(sample_data[:5]):
         print(f"{i+1}. {product['name']} - {product['brand']} - ${product['price']}")
 

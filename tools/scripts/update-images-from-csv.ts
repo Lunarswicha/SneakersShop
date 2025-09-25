@@ -28,13 +28,13 @@ function parseCsv(csv: string): Array<ProductRow> {
 }
 
 async function main() {
-  console.log('🔄 Updating product images from CSV...');
+  console.log(' Updating product images from CSV...');
   
   const csvPath = path.resolve(__dirname, '../scraper/output/sneakers_improved_images.csv');
   const csvContent = fs.readFileSync(csvPath, 'utf-8');
   const rows = parseCsv(csvContent);
   
-  console.log(`📊 Found ${rows.length} products to update`);
+  console.log(` Found ${rows.length} products to update`);
   
   let updated = 0;
   let errors = 0;
@@ -45,7 +45,7 @@ async function main() {
       const imageUrl = row.ImageURL?.trim();
       
       if (!name || !imageUrl) {
-        console.log(`⚠️  Skipping ${name} - missing data`);
+        console.log(`  Skipping ${name} - missing data`);
         continue;
       }
       
@@ -63,7 +63,7 @@ async function main() {
       });
       
       if (!product) {
-        console.log(`❌ Product not found: ${name}`);
+        console.log(` Product not found: ${name}`);
         errors++;
         continue;
       }
@@ -90,18 +90,18 @@ async function main() {
         });
       }
       
-      console.log(`✅ Updated: ${name}`);
+      console.log(` Updated: ${name}`);
       updated++;
       
     } catch (error) {
-      console.error(`❌ Error updating ${row.Name}:`, error);
+      console.error(` Error updating ${row.Name}:`, error);
       errors++;
     }
   }
   
-  console.log(`\n🎉 Update complete!`);
-  console.log(`✅ Updated: ${updated} products`);
-  console.log(`❌ Errors: ${errors} products`);
+  console.log(`\n Update complete!`);
+  console.log(` Updated: ${updated} products`);
+  console.log(` Errors: ${errors} products`);
 }
 
 main()

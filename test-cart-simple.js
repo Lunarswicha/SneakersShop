@@ -2,11 +2,11 @@
 const API_BASE = 'http://localhost:4000/api';
 
 async function testCart() {
-  console.log('🧪 Test du panier...');
+  console.log('Test du panier...');
   
   try {
-    // 1. Récupérer le panier
-    console.log('1. Récupération du panier...');
+    // 1. R�cup�rer le panier
+    console.log('1. R�cup�ration du panier...');
     const getResponse = await fetch(`${API_BASE}/cart-session`, {
       headers: { 'X-Session-ID': 'test-session-123' }
     });
@@ -29,20 +29,20 @@ async function testCart() {
       })
     });
     const addData = await addResponse.json();
-    console.log('Produit ajouté:', addData);
+    console.log('Produit ajout�:', addData);
     
-    // 3. Vérifier le panier
-    console.log('3. Vérification du panier...');
+    // 3. V�rifier le panier
+    console.log('3. V�rification du panier...');
     const finalResponse = await fetch(`${API_BASE}/cart-session`, {
       headers: { 'X-Session-ID': 'test-session-123' }
     });
     const finalData = await finalResponse.json();
     console.log('Panier final:', finalData);
     
-    console.log('✅ Test terminé avec succès!');
+    console.log(' Test termin� avec succ�s!');
     
   } catch (error) {
-    console.error('❌ Erreur:', error);
+    console.error(' Erreur:', error);
   }
 }
 
