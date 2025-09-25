@@ -37,17 +37,17 @@ export default async function Home() {
             Born from a late-night debate over the best everyday sneaker, SneakerShop is a tiny, 
             independent project built by runners, hoopers, and collectors. We obsess over fit, 
             feel, and heritage. This demo showcases a modern stack for product discovery, carts, 
-            and checkout — with a catalog inspired by real models from the brands we love.
+            and checkout  with a catalog inspired by real models from the brands we love.
           </p>
           <div className="flex gap-4">
             <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold">
-              🏃
+              R
             </div>
             <div className="w-12 h-12 rounded-full bg-gradient-to-br from-green-500 to-blue-600 flex items-center justify-center text-white font-bold">
-              🏀
+              B
             </div>
             <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center text-white font-bold">
-              👟
+              S
             </div>
           </div>
         </div>
@@ -68,21 +68,21 @@ export default async function Home() {
       <div className="grid md:grid-cols-3 gap-8 mt-20">
         <div className="card p-8 text-center hover-lift group">
           <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-2xl">
-            🔍
+            D
           </div>
           <h3 className="text-xl font-semibold mb-3">Discover</h3>
           <p className="text-gray-600">Find your perfect sneakers with our advanced search and filtering system.</p>
         </div>
         <div className="card p-8 text-center hover-lift group">
           <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-green-500 to-blue-600 flex items-center justify-center text-2xl">
-            🛒
+            C
           </div>
           <h3 className="text-xl font-semibold mb-3">Collect</h3>
           <p className="text-gray-600">Build your collection with our curated selection of premium sneakers.</p>
         </div>
         <div className="card p-8 text-center hover-lift group">
           <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center text-2xl">
-            🏃
+            R
           </div>
           <h3 className="text-xl font-semibold mb-3">Run</h3>
           <p className="text-gray-600">Experience comfort and performance with every step you take.</p>

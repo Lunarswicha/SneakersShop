@@ -37,7 +37,7 @@ export default function ProductCard({ product }: any) {
         
         {/* Price badge */}
         <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 text-sm font-semibold shadow-lg">
-          {Number(price).toFixed(0)}€
+          {Number(price).toFixed(0)}
         </div>
       </div>
       
@@ -51,7 +51,7 @@ export default function ProductCard({ product }: any) {
         
         <div className="flex items-center justify-between pt-2">
           <div className="text-2xl font-bold text-gradient">
-            {Number(price).toFixed(0)}€
+            {Number(price).toFixed(0)}
           </div>
           <Link
             href={`/products/${product.id}`}

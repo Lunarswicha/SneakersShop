@@ -16,12 +16,12 @@ export default function CartPage() {
   
   async function fetchCart() {
     try {
-      console.log('🛒 Fetching cart, user:', user ? 'logged in' : 'not logged in');
+      console.log('Fetching cart, user:', user ? 'logged in' : 'not logged in');
       
       // Pour l'instant, utiliser toujours l'API de session pour simplifier
-      console.log('👤 Fetching session cart from:', `${API_BASE}/cart-session`);
+      console.log('Fetching session cart from:', `${API_BASE}/cart-session`);
       
-      // Récupérer l'ID de session depuis localStorage
+      // R�cup�rer l'ID de session depuis localStorage
       let sessionId = localStorage.getItem('sessionId');
       if (!sessionId) {
         sessionId = 'session-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
@@ -36,12 +36,12 @@ export default function CartPage() {
         }
       });
       
-      console.log('👤 Session cart response status:', response.status);
+      console.log('Session cart response status:', response.status);
       const data = await response.json();
-      console.log('👤 Session cart data:', data);
-      console.log('👤 Items count:', data.items?.length || 0);
+      console.log('Session cart data:', data);
+      console.log('Items count:', data.items?.length || 0);
       
-      // Mettre à jour l'ID de session si nécessaire
+      // Mettre � jour l'ID de session si n�cessaire
       if (data.sessionId && data.sessionId !== sessionId) {
         localStorage.setItem('sessionId', data.sessionId);
       }
@@ -49,7 +49,7 @@ export default function CartPage() {
       setItems(data.items || []);
       setSessionId(data.sessionId || sessionId);
     } catch (error) {
-      console.error('❌ Error fetching cart:', error);
+      console.error('Error fetching cart:', error);
       setItems([]);
     }
   }
@@ -233,9 +233,9 @@ export default function CartPage() {
                     <h3 className="text-lg font-semibold">{i.variant?.product?.name || i.product?.name || 'Product'}</h3>
                     <div className="flex items-center gap-4 text-sm text-gray-600">
                       <span>Size: {i.variant?.size || i.size || 'N/A'}</span>
-                      <span>•</span>
+                      <span></span>
                       <span>Color: {i.variant?.color || i.color || 'N/A'}</span>
-                      <span>•</span>
+                      <span></span>
                       <span>Qty: {i.quantity}</span>
                     </div>
                   </div>
@@ -245,13 +245,13 @@ export default function CartPage() {
                       {(() => {
                         const price = i.variant?.price || i.variant?.product?.basePrice || i.product?.basePrice || 0;
                         return Number(price) * i.quantity;
-                      })()}€
+                      })()}
                     </div>
                     <div className="text-sm text-gray-500">
                       {(() => {
                         const price = i.variant?.price || i.variant?.product?.basePrice || i.product?.basePrice || 0;
                         return Number(price);
-                      })()}€ each
+                      })()} each
                     </div>
                   </div>
                   
@@ -293,7 +293,7 @@ export default function CartPage() {
             <div className="space-y-4">
               <div className="flex justify-between items-center text-lg">
                 <span>Subtotal</span>
-                <span className="font-semibold">{total}€</span>
+                <span className="font-semibold">{total}</span>
               </div>
               <div className="flex justify-between items-center text-lg">
                 <span>Shipping</span>
@@ -302,7 +302,7 @@ export default function CartPage() {
               <div className="border-t border-gray-200 pt-4">
                 <div className="flex justify-between items-center text-2xl font-bold">
                   <span>Total</span>
-                  <span className="text-gradient">{total}€</span>
+                  <span className="text-gradient">{total}</span>
                 </div>
               </div>
             </div>
