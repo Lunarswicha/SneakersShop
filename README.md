@@ -1,10 +1,10 @@
-# 🚀 SneakerShop - Complete E-commerce Platform
+# SneakerShop - Complete E-commerce Platform
 
 A modern, full-stack e-commerce application for sneakers built with Next.js, Node.js, PostgreSQL, and enhanced security features.
 
-## ✨ Features
+#Features
 
-### 🔐 **Authentication & Security**
+###**Authentication & Security**
 - **User Registration/Login** with visual feedback
 - **JWT Authentication** with secure cookies
 - **Password Hashing** using bcrypt (12 salt rounds)
@@ -12,28 +12,28 @@ A modern, full-stack e-commerce application for sneakers built with Next.js, Nod
 - **Security Headers** (XSS, CSRF, Clickjacking protection)
 - **Input Validation** with Zod schemas
 
-### 🛒 **E-commerce Features**
+### **E-commerce Features**
 - **Product Catalog** with 400+ sneaker products
 - **Shopping Cart** with real-time updates
 - **Checkout Process** with payment simulation
 - **Order Management** with order confirmation
 - **User Profiles** with dropdown navigation
 
-### 🎨 **Modern UI/UX**
+### **Modern UI/UX**
 - **Responsive Design** with Tailwind CSS
 - **Success Notifications** for user actions
 - **Loading States** and smooth animations
 - **Dynamic Navigation** based on auth state
 - **Mobile-First** design approach
 
-### 🐳 **Development & Deployment**
+###  **Development & Deployment**
 - **Docker PostgreSQL** database
 - **TypeScript** throughout the stack
 - **Prisma ORM** for database management
 - **Hot Reload** development servers
 - **Production Ready** configuration
 
-## 🏗️ Architecture
+## Architecture
 
 ```
 sneakershop/
@@ -117,7 +117,7 @@ NEXT_PUBLIC_API_BASE_URL=http://localhost:4000/api
 - **Brand**: Sneaker brands
 - **ProductImage**: Product photos
 
-## 🛡️ Security Features
+## Security Features
 
 ### Password Security
 - bcrypt hashing with 12 salt rounds
@@ -142,7 +142,7 @@ NEXT_PUBLIC_API_BASE_URL=http://localhost:4000/api
 - Content-Security-Policy
 - Strict-Transport-Security (HTTPS)
 
-## 🎯 API Endpoints
+##  API Endpoints
 
 ### Authentication
 - `POST /api/auth/register` - User registration
@@ -163,7 +163,7 @@ NEXT_PUBLIC_API_BASE_URL=http://localhost:4000/api
 - `POST /api/payments/create` - Create payment intent
 - `POST /api/payments/confirm` - Confirm payment
 
-## 🧪 Testing
+##Testing
 
 ### Manual Testing
 ```bash
@@ -179,7 +179,7 @@ curl http://localhost:4000/api/products
 curl -I http://localhost:4000/health
 ```
 
-## 📱 User Flow
+## User Flow
 
 1. **Browse Products** → View sneaker catalog
 2. **Register/Login** → Create account or sign in
@@ -187,7 +187,7 @@ curl -I http://localhost:4000/health
 4. **Checkout** → Proceed to payment
 5. **Order Confirmation** → Complete purchase
 
-## 🚀 Deployment
+## Deployment
 
 ### Frontend (Vercel)
 1. Connect GitHub repository
