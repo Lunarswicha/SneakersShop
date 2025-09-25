@@ -16,11 +16,11 @@ router.post('/create', requireAuth, async (req, res) => {
   res.json({ clientSecret, amount });
 });
 
-// Route pour les utilisateurs non connect√©s (panier de session)
+// Route pour les utilisateurs non connect√s (panier de session)
 router.post('/create-session', async (req, res) => {
   try {
-    // Simuler la r√©cup√©ration du panier de session
-    // Dans un vrai syst√®me, vous r√©cup√©reriez le panier depuis la session
+    // Simuler la r√cup√ration du panier de session
+    // Dans un vrai syst√me, vous r√cup√reriez le panier depuis la session
     const sessionCart = req.body.cartItems || [];
     
     if (sessionCart.length === 0) {

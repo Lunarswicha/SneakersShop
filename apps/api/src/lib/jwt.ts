@@ -3,7 +3,7 @@ import crypto from 'crypto';
 
 // Enhanced JWT secret with fallback generation
 const JWT_SECRET = process.env.JWT_SECRET || (() => {
-  console.warn('⚠️  JWT_SECRET not set, using generated secret (not recommended for production)');
+  console.warn('  JWT_SECRET not set, using generated secret (not recommended for production)');
   return crypto.randomBytes(64).toString('hex');
 })();
 

@@ -5,7 +5,7 @@ import { z } from 'zod';
 
 const router = Router();
 
-// Schema de validation pour la mise Ã  jour du stock
+// Schema de validation pour la mise Ã jour du stock
 const updateStockSchema = z.object({
   variantId: z.number().int().positive(),
   stockQuantity: z.number().int().min(0),
@@ -16,7 +16,7 @@ router.get('/products', requireAuth, async (req, res) => {
   try {
     const user = (req as any).user;
     
-    // VÃ©rifier que l'utilisateur est admin
+    // VÃrifier que l'utilisateur est admin
     if (user.role !== 'admin') {
       return res.status(403).json({ error: 'Access denied. Admin role required.' });
     }
@@ -77,19 +77,19 @@ router.get('/products', requireAuth, async (req, res) => {
   }
 });
 
-// Mettre Ã  jour le stock d'une variante
+// Mettre Ã jour le stock d'une variante
 router.put('/stock', requireAuth, async (req, res) => {
   try {
     const user = (req as any).user;
     
-    // VÃ©rifier que l'utilisateur est admin
+    // VÃrifier que l'utilisateur est admin
     if (user.role !== 'admin') {
       return res.status(403).json({ error: 'Access denied. Admin role required.' });
     }
 
     const { variantId, stockQuantity } = updateStockSchema.parse(req.body);
 
-    // VÃ©rifier que la variante existe
+    // VÃrifier que la variante existe
     const variant = await prisma.productVariant.findUnique({
       where: { id: variantId },
       include: {
@@ -105,7 +105,7 @@ router.put('/stock', requireAuth, async (req, res) => {
       return res.status(404).json({ error: 'Product variant not found' });
     }
 
-    // Mettre Ã  jour le stock
+    // Mettre Ã jour le stock
     const updatedVariant = await prisma.productVariant.update({
       where: { id: variantId },
       data: { stockQuantity },
@@ -137,7 +137,7 @@ router.get('/stats', requireAuth, async (req, res) => {
   try {
     const user = (req as any).user;
     
-    // VÃ©rifier que l'utilisateur est admin
+    // VÃrifier que l'utilisateur est admin
     if (user.role !== 'admin') {
       return res.status(403).json({ error: 'Access denied. Admin role required.' });
     }
@@ -244,7 +244,7 @@ router.get('/search', requireAuth, async (req, res) => {
       },
     });
 
-    // Filtrer par stock si demandÃ©
+    // Filtrer par stock si demandÃ
     let filteredProducts = products;
     if (lowStock === 'true') {
       filteredProducts = products.filter(product => 

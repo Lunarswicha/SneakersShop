@@ -80,9 +80,9 @@ export function securityLogging(req: Request, res: Response, next: NextFunction)
     
     // Log security-relevant events
     if (res.statusCode >= 400) {
-      console.warn('⚠️  Security Event:', logData);
+      console.warn('  Security Event:', logData);
     } else {
-      console.log('📝 Request:', logData);
+      console.log(' Request:', logData);
     }
   });
   

@@ -23,7 +23,7 @@ router.post('/sync', requireAuth, async (req, res) => {
     const cartItems = [];
     
     for (const sessionItem of sessionCartItems) {
-      // Pour les articles de session, on doit cr√©er des variantes virtuelles
+      // Pour les articles de session, on doit cr√er des variantes virtuelles
       // ou utiliser les variantes existantes du produit
       const product = await prisma.product.findUnique({
         where: { id: sessionItem.productId },
@@ -35,10 +35,10 @@ router.post('/sync', requireAuth, async (req, res) => {
       let variantId;
       
       if (product.variants.length > 0) {
-        // Utiliser la premi√®re variante disponible
+        // Utiliser la premi√re variante disponible
         variantId = product.variants[0].id;
       } else {
-        // Cr√©er une variante virtuelle pour les produits sans variantes
+        // Cr√er une variante virtuelle pour les produits sans variantes
         const virtualVariant = await prisma.productVariant.create({
           data: {
             productId: product.id,
@@ -64,7 +64,7 @@ router.post('/sync', requireAuth, async (req, res) => {
       cartItems.push(cartItem);
     }
 
-    // R√©cup√©rer le panier complet avec les d√©tails
+    // R√cup√rer le panier complet avec les d√tails
     const fullCart = await prisma.shoppingCart.findMany({
       where: { userId: user.id },
       include: {
