@@ -4,21 +4,21 @@ const prisma = new PrismaClient();
 
 async function initStock() {
   try {
-    console.log('üîÑ Initialisation des stocks...');
+    console.log(' Initialisation des stocks...');
 
-    // R√©cup√©rer tous les produits avec leurs variantes
+    // R√cup√rer tous les produits avec leurs variantes
     const products = await prisma.product.findMany({
       include: {
         variants: true,
       },
     });
 
-    console.log(`üì¶ Trouv√© ${products.length} produits`);
+    console.log(` Trouv√ ${products.length} produits`);
 
-    // Mettre √† jour les stocks avec des valeurs al√©atoires
+    // Mettre √ jour les stocks avec des valeurs al√atoires
     for (const product of products) {
       for (const variant of product.variants) {
-        // G√©n√©rer un stock al√©atoire entre 0 et 50
+        // G√n√rer un stock al√atoire entre 0 et 50
         const randomStock = Math.floor(Math.random() * 51);
         
         await prisma.productVariant.update({
@@ -40,15 +40,15 @@ async function initStock() {
       where: { stockQuantity: 0 },
     });
 
-    console.log('‚úÖ Stocks initialis√©s avec succ√®s !');
-    console.log('üìä Statistiques:');
+    console.log(' Stocks initialis√s avec succ√s !');
+    console.log(' Statistiques:');
     console.log(`   - Total variantes: ${totalVariants}`);
     console.log(`   - Stock total: ${totalStock._sum.stockQuantity || 0}`);
     console.log(`   - Stock faible (< 10): ${lowStockVariants}`);
     console.log(`   - Rupture de stock: ${outOfStockVariants}`);
 
   } catch (error) {
-    console.error('‚ùå Erreur lors de l\'initialisation des stocks:', error);
+    console.error(' Erreur lors de l\'initialisation des stocks:', error);
   } finally {
     await prisma.$disconnect();
   }

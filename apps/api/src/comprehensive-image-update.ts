@@ -165,7 +165,7 @@ function findBestImageMatch(productName: string): string {
 }
 
 async function updateAllProductImages() {
-  console.log('🚀 Starting comprehensive image update...');
+  console.log(' Starting comprehensive image update...');
   
   const products = await prisma.product.findMany({
     include: {
@@ -173,7 +173,7 @@ async function updateAllProductImages() {
     }
   });
   
-  console.log(`📊 Found ${products.length} products to update`);
+  console.log(` Found ${products.length} products to update`);
   
   let updated = 0;
   let errors = 0;
@@ -202,18 +202,18 @@ async function updateAllProductImages() {
         });
       }
       
-      console.log(`✅ Updated: ${product.name}`);
+      console.log(` Updated: ${product.name}`);
       updated++;
       
     } catch (error) {
-      console.error(`❌ Error updating ${product.name}:`, error);
+      console.error(` Error updating ${product.name}:`, error);
       errors++;
     }
   }
   
-  console.log(`\n🎉 Comprehensive update complete!`);
-  console.log(`✅ Updated: ${updated} products`);
-  console.log(`❌ Errors: ${errors} products`);
+  console.log(`\n Comprehensive update complete!`);
+  console.log(` Updated: ${updated} products`);
+  console.log(` Errors: ${errors} products`);
 }
 
 async function main() {

@@ -4,7 +4,7 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log('🔍 Checking for invalid image URLs...');
+  console.log(' Checking for invalid image URLs...');
   
   // Find all products with invalid image URLs
   const products = await prisma.product.findMany({
@@ -26,7 +26,7 @@ async function main() {
           imageUrl.includes('and affordable') ||
           !imageUrl.startsWith('http')) {
         
-        console.log(`🔧 Fixing invalid URL for ${product.name}: ${imageUrl}`);
+        console.log(` Fixing invalid URL for ${product.name}: ${imageUrl}`);
         
         // Assign a proper fallback image based on brand
         let fallbackUrl = 'https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=800&auto=format&fit=crop';
@@ -52,19 +52,19 @@ async function main() {
             }
           });
           
-          console.log(`✅ Fixed: ${product.name} -> ${fallbackUrl}`);
+          console.log(` Fixed: ${product.name} -> ${fallbackUrl}`);
           fixed++;
         } catch (error) {
-          console.error(`❌ Error fixing ${product.name}:`, error);
+          console.error(` Error fixing ${product.name}:`, error);
           errors++;
         }
       }
     }
   }
   
-  console.log(`\n🎉 Fix complete!`);
-  console.log(`✅ Fixed: ${fixed} images`);
-  console.log(`❌ Errors: ${errors} images`);
+  console.log(`\n Fix complete!`);
+  console.log(` Fixed: ${fixed} images`);
+  console.log(` Errors: ${errors} images`);
 }
 
 main()

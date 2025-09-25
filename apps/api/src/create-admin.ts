@@ -5,19 +5,19 @@ const prisma = new PrismaClient();
 
 async function createAdmin() {
   try {
-    console.log('ğŸ”„ CrÃ©ation d\'un utilisateur administrateur...');
+    console.log(' CrÃation d\'un utilisateur administrateur...');
 
-    // VÃ©rifier si un admin existe dÃ©jÃ 
+    // VÃrifier si un admin existe dÃjÃ
     const existingAdmin = await prisma.user.findFirst({
       where: { role: 'admin' },
     });
 
     if (existingAdmin) {
-      console.log('âœ… Un administrateur existe dÃ©jÃ :', existingAdmin.email);
+      console.log(' Un administrateur existe dÃjÃ:', existingAdmin.email);
       return;
     }
 
-    // CrÃ©er un nouvel administrateur
+    // CrÃer un nouvel administrateur
     const hashedPassword = await hashPassword('admin123');
     
     const admin = await prisma.user.create({
@@ -32,13 +32,13 @@ async function createAdmin() {
       },
     });
 
-    console.log('âœ… Administrateur crÃ©Ã© avec succÃ¨s !');
-    console.log('ğŸ“§ Email: admin@sneakershop.com');
-    console.log('ğŸ”‘ Mot de passe: admin123');
-    console.log('ğŸ‘¤ ID:', admin.id);
+    console.log(' Administrateur crÃÃ avec succÃs !');
+    console.log(' Email: admin@sneakershop.com');
+    console.log(' Mot de passe: admin123');
+    console.log(' ID:', admin.id);
 
   } catch (error) {
-    console.error('âŒ Erreur lors de la crÃ©ation de l\'administrateur:', error);
+    console.error(' Erreur lors de la crÃation de l\'administrateur:', error);
   } finally {
     await prisma.$disconnect();
   }

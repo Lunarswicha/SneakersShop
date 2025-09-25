@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 
 async function resetAdminPassword() {
   try {
-    console.log('🔄 Réinitialisation du mot de passe admin...');
+    console.log('R�initialisation du mot de passe admin...');
     
     const newPassword = 'admin123';
     const hashedPassword = await hashPassword(newPassword);
@@ -15,12 +15,12 @@ async function resetAdminPassword() {
       data: { passwordHash: hashedPassword }
     });
     
-    console.log('✅ Mot de passe admin réinitialisé avec succès !');
-    console.log('📧 Email: admin@example.com');
-    console.log('🔑 Nouveau mot de passe: admin123');
+    console.log('Mot de passe admin r�initialis� avec succ�s !');
+    console.log('Email: admin@example.com');
+    console.log('Nouveau mot de passe: admin123');
     
   } catch (error) {
-    console.error('❌ Erreur:', error);
+    console.error('Erreur:', error);
   } finally {
     await prisma.$disconnect();
   }

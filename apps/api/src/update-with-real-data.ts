@@ -32,14 +32,14 @@ interface RealProduct {
 }
 
 async function updateDatabaseWithRealData() {
-  console.log('🚀 Updating database with real KicksCrew data...');
+  console.log(' Updating database with real KicksCrew data...');
   
   // Read the CSV file
   const csvPath = path.resolve(__dirname, '../../../tools/real_sneaker_products.csv');
   const csvContent = fs.readFileSync(csvPath, 'utf-8');
   const lines = csvContent.split('\n').slice(1); // Skip header
   
-  console.log(`📊 Found ${lines.length} real products to process`);
+  console.log(` Found ${lines.length} real products to process`);
   
   let updated = 0;
   let created = 0;
@@ -80,7 +80,7 @@ async function updateDatabaseWithRealData() {
       };
       
       if (!realProduct.name || !realProduct.image_url) {
-        console.warn(`⚠️ Skipping product with missing data: ${realProduct.name}`);
+        console.warn(` Skipping product with missing data: ${realProduct.name}`);
         continue;
       }
       
@@ -93,7 +93,7 @@ async function updateDatabaseWithRealData() {
         brandRecord = await prisma.brand.create({
           data: { name: realProduct.brand }
         });
-        console.log(`✅ Created brand: ${realProduct.brand}`);
+        console.log(` Created brand: ${realProduct.brand}`);
       }
       
       // Find existing product by name
@@ -137,7 +137,7 @@ async function updateDatabaseWithRealData() {
           });
         }
         
-        console.log(`✅ Updated: ${realProduct.name}`);
+        console.log(` Updated: ${realProduct.name}`);
         updated++;
       } else {
         // Create new product
@@ -158,20 +158,20 @@ async function updateDatabaseWithRealData() {
           }
         });
         
-        console.log(`✅ Created: ${realProduct.name}`);
+        console.log(` Created: ${realProduct.name}`);
         created++;
       }
       
     } catch (error) {
-      console.error(`❌ Error processing product:`, error);
+      console.error(` Error processing product:`, error);
       errors++;
     }
   }
   
-  console.log(`\n🎉 Database update complete!`);
-  console.log(`✅ Updated: ${updated} products`);
-  console.log(`✅ Created: ${created} products`);
-  console.log(`❌ Errors: ${errors} products`);
+  console.log(`\n Database update complete!`);
+  console.log(` Updated: ${updated} products`);
+  console.log(` Created: ${created} products`);
+  console.log(` Errors: ${errors} products`);
 }
 
 async function main() {

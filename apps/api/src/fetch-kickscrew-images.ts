@@ -86,7 +86,7 @@ function findBestMatch(productName: string, kicksCrewProducts: KicksCrewProduct[
 }
 
 async function updateProductImages() {
-  console.log('🚀 Starting KicksCrew image update...');
+  console.log(' Starting KicksCrew image update...');
   
   // Get all products from database
   const products = await prisma.product.findMany({
@@ -96,7 +96,7 @@ async function updateProductImages() {
     }
   });
   
-  console.log(`📊 Found ${products.length} products to update`);
+  console.log(` Found ${products.length} products to update`);
   
   // Group products by brand
   const productsByBrand = new Map<string, any[]>();
@@ -113,17 +113,17 @@ async function updateProductImages() {
   
   // Process each brand
   for (const [brandName, brandProducts] of productsByBrand) {
-    console.log(`\n🔍 Processing ${brandName} (${brandProducts.length} products)...`);
+    console.log(`\n Processing ${brandName} (${brandProducts.length} products)...`);
     
     // Fetch KicksCrew products for this brand
     const kicksCrewProducts = await fetchKicksCrewProducts(brandName);
     
     if (kicksCrewProducts.length === 0) {
-      console.log(`⚠️  No KicksCrew products found for ${brandName}`);
+      console.log(`  No KicksCrew products found for ${brandName}`);
       continue;
     }
     
-    console.log(`📦 Found ${kicksCrewProducts.length} KicksCrew products for ${brandName}`);
+    console.log(` Found ${kicksCrewProducts.length} KicksCrew products for ${brandName}`);
     
     // Match and update products
     for (const product of brandProducts) {
@@ -152,10 +152,10 @@ async function updateProductImages() {
             });
           }
           
-          console.log(`✅ Updated: ${product.name} -> ${bestMatch.name}`);
+          console.log(` Updated: ${product.name} -> ${bestMatch.name}`);
           totalUpdated++;
         } else {
-          console.log(`❌ No match found for: ${product.name}`);
+          console.log(` No match found for: ${product.name}`);
           totalErrors++;
         }
         
@@ -163,15 +163,15 @@ async function updateProductImages() {
         await new Promise(resolve => setTimeout(resolve, 100));
         
       } catch (error) {
-        console.error(`❌ Error updating ${product.name}:`, error);
+        console.error(` Error updating ${product.name}:`, error);
         totalErrors++;
       }
     }
   }
   
-  console.log(`\n🎉 KicksCrew update complete!`);
-  console.log(`✅ Updated: ${totalUpdated} products`);
-  console.log(`❌ Errors: ${totalErrors} products`);
+  console.log(`\n KicksCrew update complete!`);
+  console.log(` Updated: ${totalUpdated} products`);
+  console.log(` Errors: ${totalErrors} products`);
 }
 
 async function main() {

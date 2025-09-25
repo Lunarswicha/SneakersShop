@@ -4,11 +4,11 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function checkDatabase() {
-  console.log('🔍 Checking database...');
+  console.log(' Checking database...');
   
   // Count total products
   const totalProducts = await prisma.product.count();
-  console.log(`📊 Total products in database: ${totalProducts}`);
+  console.log(` Total products in database: ${totalProducts}`);
   
   // Get some recent products
   const recentProducts = await prisma.product.findMany({
@@ -20,7 +20,7 @@ async function checkDatabase() {
     }
   });
   
-  console.log('\n📋 Recent products:');
+  console.log('\n Recent products:');
   recentProducts.forEach((product, index) => {
     console.log(`${index + 1}. ${product.name} - ${product.brand?.name} - ${product.images[0]?.imageUrl?.substring(0, 50)}...`);
   });
@@ -40,7 +40,7 @@ async function checkDatabase() {
     }
   });
   
-  console.log(`\n🎯 Found ${kickscrewProducts.length} KicksCrew products:`);
+  console.log(`\n Found ${kickscrewProducts.length} KicksCrew products:`);
   kickscrewProducts.forEach((product, index) => {
     console.log(`${index + 1}. ${product.name} - ${product.brand?.name}`);
   });

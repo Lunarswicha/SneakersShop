@@ -4,9 +4,9 @@ const prisma = new PrismaClient();
 
 async function seedStockData() {
   try {
-    console.log('üîÑ Ajout de donn√©es de stock de test...');
+    console.log(' Ajout de donn√es de stock de test...');
 
-    // R√©cup√©rer quelques produits pour les mettre √† jour avec des stocks vari√©s
+    // R√cup√rer quelques produits pour les mettre √ jour avec des stocks vari√s
     const products = await prisma.product.findMany({
       take: 10,
       include: {
@@ -14,12 +14,12 @@ async function seedStockData() {
       },
     });
 
-    console.log(`üì¶ Mise √† jour de ${products.length} produits avec des stocks vari√©s...`);
+    console.log(` Mise √ jour de ${products.length} produits avec des stocks vari√s...`);
 
     for (let i = 0; i < products.length; i++) {
       const product = products[i];
       
-      // Cr√©er des sc√©narios de stock vari√©s
+      // Cr√er des sc√narios de stock vari√s
       let stockValues: number[];
       
       if (i < 3) {
@@ -33,7 +33,7 @@ async function seedStockData() {
         stockValues = product.variants.map(() => Math.floor(Math.random() * 50) + 10);
       }
 
-      // Mettre √† jour chaque variante
+      // Mettre √ jour chaque variante
       for (let j = 0; j < product.variants.length; j++) {
         const variant = product.variants[j];
         await prisma.productVariant.update({
@@ -42,7 +42,7 @@ async function seedStockData() {
         });
       }
 
-      console.log(`‚úÖ ${product.name}: ${stockValues.join(', ')}`);
+      console.log(` ${product.name}: ${stockValues.join(', ')}`);
     }
 
     // Afficher les statistiques finales
@@ -59,14 +59,14 @@ async function seedStockData() {
       where: { stockQuantity: 0 },
     });
 
-    console.log('üìä Statistiques finales:');
+    console.log(' Statistiques finales:');
     console.log(`   - Total variantes: ${stats._count}`);
     console.log(`   - Stock total: ${stats._sum.stockQuantity || 0}`);
     console.log(`   - Stock faible: ${lowStock}`);
     console.log(`   - Rupture: ${outOfStock}`);
 
   } catch (error) {
-    console.error('‚ùå Erreur lors de l\'ajout des donn√©es de stock:', error);
+    console.error(' Erreur lors de l\'ajout des donn√es de stock:', error);
   } finally {
     await prisma.$disconnect();
   }
