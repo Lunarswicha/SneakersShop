@@ -69,7 +69,7 @@ export default function InventoryPage() {
         setProducts(data.products);
         setStats(data.stats);
       } else {
-        showNotification('Erreur lors du chargement des donn√©es', 'error');
+        showNotification('Erreur lors du chargement des donn√es', 'error');
       }
     } catch (error) {
       console.error('Error fetching inventory:', error);
@@ -94,12 +94,12 @@ export default function InventoryPage() {
       });
 
       if (response.ok) {
-        showNotification('Stock mis √† jour avec succ√®s', 'success');
-        fetchInventoryData(); // Rafra√Æchir les donn√©es
+        showNotification('Stock mis √ jour avec succ√s', 'success');
+        fetchInventoryData(); // Rafra√chir les donn√es
         setEditingStock(null);
         setNewStockValue('');
       } else {
-        showNotification('Erreur lors de la mise √† jour du stock', 'error');
+        showNotification('Erreur lors de la mise √ jour du stock', 'error');
       }
     } catch (error) {
       console.error('Error updating stock:', error);
@@ -159,8 +159,8 @@ export default function InventoryPage() {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">Acc√®s refus√©</h1>
-          <p className="text-gray-600">Vous devez √™tre administrateur pour acc√©der √† cette page.</p>
+          <h1 className="text-2xl font-bold text-gray-900 mb-4">Acc√s refus√</h1>
+          <p className="text-gray-600">Vous devez √tre administrateur pour acc√der √ cette page.</p>
         </div>
       </div>
     );
@@ -172,7 +172,7 @@ export default function InventoryPage() {
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900">Gestion des Stocks</h1>
-          <p className="mt-2 text-gray-600">G√©rez l'inventaire de vos produits</p>
+          <p className="mt-2 text-gray-600">G√rez l'inventaire de vos produits</p>
         </div>
 
         {/* Statistiques */}
@@ -225,7 +225,7 @@ export default function InventoryPage() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">√âtat du Stock</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">√tat du Stock</label>
               <select
                 value={filterStock}
                 onChange={(e) => setFilterStock(e.target.value)}
@@ -311,7 +311,7 @@ export default function InventoryPage() {
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                           <button
                             onClick={() => {
-                              // Afficher les d√©tails des variantes
+                              // Afficher les d√tails des variantes
                               const variants = product.variants.map(v => 
                                 `Taille: ${v.size || 'N/A'}, Couleur: ${v.color || 'N/A'}, Stock: ${v.stockQuantity}`
                               ).join('\n');
@@ -319,7 +319,7 @@ export default function InventoryPage() {
                             }}
                             className="text-blue-600 hover:text-blue-900"
                           >
-                            Voir d√©tails
+                            Voir d√tails
                           </button>
                         </td>
                       </tr>
@@ -333,7 +333,7 @@ export default function InventoryPage() {
 
         {filteredProducts.length === 0 && !loadingData && (
           <div className="text-center py-12">
-            <div className="text-gray-500">Aucun produit trouv√©</div>
+            <div className="text-gray-500">Aucun produit trouv√</div>
           </div>
         )}
       </div>

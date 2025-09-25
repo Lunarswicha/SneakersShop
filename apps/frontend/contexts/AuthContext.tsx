@@ -72,7 +72,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const syncSessionCart = async () => {
     try {
-      // R√©cup√©rer le panier de session
+      // R√cup√rer le panier de session
       const sessionResponse = await fetch(`${API_BASE}/cart-session`, {
         credentials: 'include'
       });

@@ -6,8 +6,8 @@ import { AuthProvider } from '../contexts/AuthContext';
 import { NotificationProvider } from '../contexts/NotificationContext';
 
 export const metadata = {
-  title: 'SneakerShop — Discover, collect, run',
-  description: 'Modern sneakers e‑commerce demo with cart and checkout',
+  title: 'SneakerShop  Discover, collect, run',
+  description: 'Modern sneakers ecommerce demo with cart and checkout',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -32,7 +32,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   </Link>
                 </div>
                 <div className="text-gray-500">
-                  © 2024 SneakerShop. All rights reserved.
+                  � 2024 SneakerShop. All rights reserved.
                 </div>
               </div>
             </footer>

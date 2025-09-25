@@ -138,8 +138,8 @@ export default function RegisterPage() {
                 <div>
                   <h3 className="text-sm font-medium text-blue-800">Password Requirements</h3>
                   <ul className="text-sm text-blue-700 mt-1 space-y-1">
-                    <li>• At least 8 characters long</li>
-                    <li>• Mix of letters and numbers recommended</li>
+                    <li> At least 8 characters long</li>
+                    <li> Mix of letters and numbers recommended</li>
                   </ul>
                 </div>
               </div>
@@ -176,7 +176,7 @@ export default function RegisterPage() {
 
         <div className="text-center">
           <Link href="/" className="text-gray-600 hover:text-gray-500">
-            ← Back to Home
+             Back to Home
           </Link>
         </div>
       </div>

@@ -63,7 +63,7 @@ export default function ProductInventoryPage() {
         if (foundProduct) {
           setProduct(foundProduct);
         } else {
-          showNotification('Produit non trouv√©', 'error');
+          showNotification('Produit non trouv√', 'error');
           router.push('/admin/inventory');
         }
       } else {
@@ -92,12 +92,12 @@ export default function ProductInventoryPage() {
       });
 
       if (response.ok) {
-        showNotification('Stock mis √† jour avec succ√®s', 'success');
-        fetchProductData(); // Rafra√Æchir les donn√©es
+        showNotification('Stock mis √ jour avec succ√s', 'success');
+        fetchProductData(); // Rafra√chir les donn√es
         setEditingStock(null);
         setNewStockValue('');
       } else {
-        showNotification('Erreur lors de la mise √† jour du stock', 'error');
+        showNotification('Erreur lors de la mise √ jour du stock', 'error');
       }
     } catch (error) {
       console.error('Error updating stock:', error);
@@ -144,8 +144,8 @@ export default function ProductInventoryPage() {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">Acc√®s refus√©</h1>
-          <p className="text-gray-600">Vous devez √™tre administrateur pour acc√©der √† cette page.</p>
+          <h1 className="text-2xl font-bold text-gray-900 mb-4">Acc√s refus√</h1>
+          <p className="text-gray-600">Vous devez √tre administrateur pour acc√der √ cette page.</p>
         </div>
       </div>
     );
@@ -163,12 +163,12 @@ export default function ProductInventoryPage() {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">Produit non trouv√©</h1>
+          <h1 className="text-2xl font-bold text-gray-900 mb-4">Produit non trouv√</h1>
           <button
             onClick={() => router.push('/admin/inventory')}
             className="btn-primary"
           >
-            Retour √† l'inventaire
+            Retour √ l'inventaire
           </button>
         </div>
       </div>
@@ -186,11 +186,11 @@ export default function ProductInventoryPage() {
             onClick={() => router.push('/admin/inventory')}
             className="text-blue-600 hover:text-blue-800 mb-4"
           >
-            ‚Üê Retour √† l'inventaire
+             Retour √ l'inventaire
           </button>
           <h1 className="text-3xl font-bold text-gray-900">{product.name}</h1>
           <p className="mt-2 text-gray-600">
-            {product.brand?.name} ‚Ä¢ Stock total: {totalStock} unit√©s
+            {product.brand?.name}  Stock total: {totalStock} unit√s
           </p>
         </div>
 
@@ -224,7 +224,7 @@ export default function ProductInventoryPage() {
                 <div>
                   <span className="font-medium text-gray-700">Prix de base:</span>
                   <span className="ml-2 text-gray-900">
-                    {product.basePrice ? `${product.basePrice}‚Ç¨` : 'N/A'}
+                    {product.basePrice ? `${product.basePrice}` : 'N/A'}
                   </span>
                 </div>
                 <div>
@@ -284,7 +284,7 @@ export default function ProductInventoryPage() {
                         {variant.sku || 'N/A'}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                        {variant.price ? `${variant.price}‚Ç¨` : 'N/A'}
+                        {variant.price ? `${variant.price}` : 'N/A'}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         {editingStock === variant.id ? (
@@ -300,13 +300,13 @@ export default function ProductInventoryPage() {
                               onClick={handleStockSave}
                               className="text-green-600 hover:text-green-800 text-sm"
                             >
-                              ‚úì
+                              
                             </button>
                             <button
                               onClick={handleStockCancel}
                               className="text-red-600 hover:text-red-800 text-sm"
                             >
-                              ‚úï
+                              
                             </button>
                           </div>
                         ) : (
@@ -340,7 +340,7 @@ export default function ProductInventoryPage() {
 
         {product.variants.length === 0 && (
           <div className="text-center py-12">
-            <div className="text-gray-500">Aucune variante trouv√©e pour ce produit</div>
+            <div className="text-gray-500">Aucune variante trouv√e pour ce produit</div>
           </div>
         )}
       </div>

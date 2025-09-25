@@ -51,7 +51,7 @@ export default function CheckoutPage() {
       // Simuler un processus de paiement
       await new Promise(resolve => setTimeout(resolve, 2000));
       
-      // Simuler une commande réussie
+      // Simuler une commande r�ussie
       const orderNumber = `ORD-${Date.now()}`;
       setOrderId(orderNumber);
       setAmount(total.toString());
@@ -144,13 +144,13 @@ export default function CheckoutPage() {
                       <div>
                         <h3 className="font-semibold">{item.product?.name || 'Product'}</h3>
                         <p className="text-sm text-gray-600">
-                          Size: {item.size} • Color: {item.color} • Qty: {item.quantity}
+                          Size: {item.size}  Color: {item.color}  Qty: {item.quantity}
                         </p>
                       </div>
                     </div>
                     <div className="text-right">
                       <div className="font-bold">
-                        {(Number(item.product?.basePrice || 0) * item.quantity).toFixed(2)}€
+                        {(Number(item.product?.basePrice || 0) * item.quantity).toFixed(2)}
                       </div>
                     </div>
                   </div>
@@ -159,7 +159,7 @@ export default function CheckoutPage() {
               <div className="mt-6 pt-4 border-t border-gray-200">
                 <div className="flex justify-between items-center text-xl font-bold">
                   <span>Total:</span>
-                  <span className="text-gradient">{total.toFixed(2)}€</span>
+                  <span className="text-gradient">{total.toFixed(2)}</span>
                 </div>
               </div>
             </div>
@@ -177,7 +177,7 @@ export default function CheckoutPage() {
                     Processing Payment...
                   </div>
                 ) : (
-                  `Pay ${total.toFixed(2)}€`
+                  `Pay ${total.toFixed(2)}`
                 )}
               </button>
             </div>
@@ -217,8 +217,8 @@ export default function CheckoutPage() {
                 <div className="flex-1">
                   <h3 className="font-semibold">{item.variant?.product?.name || item.product?.name || 'Product'}</h3>
                   <p className="text-sm text-gray-600">
-                    Size: {item.variant?.size || item.size || 'N/A'} • 
-                    Color: {item.variant?.color || item.color || 'N/A'} • 
+                    Size: {item.variant?.size || item.size || 'N/A'}  
+                    Color: {item.variant?.color || item.color || 'N/A'}  
                     Qty: {item.quantity}
                   </p>
                 </div>
@@ -227,7 +227,7 @@ export default function CheckoutPage() {
                     {(() => {
                       const price = item.variant?.price || item.variant?.product?.basePrice || item.product?.basePrice || 0;
                       return Number(price) * item.quantity;
-                    })()}€
+                    })()}
                   </p>
                 </div>
               </div>
@@ -286,7 +286,7 @@ export default function CheckoutPage() {
           <div className="card p-6 space-y-4">
             <div className="flex justify-between">
               <span>Subtotal</span>
-              <span>{total.toFixed(2)}€</span>
+              <span>{total.toFixed(2)}</span>
             </div>
             <div className="flex justify-between">
               <span>Shipping</span>
@@ -295,7 +295,7 @@ export default function CheckoutPage() {
             <div className="border-t pt-4">
               <div className="flex justify-between text-xl font-bold">
                 <span>Total</span>
-                <span>{total.toFixed(2)}€</span>
+                <span>{total.toFixed(2)}</span>
               </div>
             </div>
           </div>

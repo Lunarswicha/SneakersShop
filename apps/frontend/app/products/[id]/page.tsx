@@ -23,7 +23,7 @@ export default function ProductDetail({ params }: any) {
 
   async function addToCart() {
     try {
-      // Si l'utilisateur est connect√© et que le produit a des variantes, utiliser l'API d'authentification
+      // Si l'utilisateur est connect√ et que le produit a des variantes, utiliser l'API d'authentification
       if (user && product.variants && product.variants.length > 0) {
         const variant = product.variants.find((v: any) => 
           v.size === Number(selectedSize) && v.color === selectedColor
@@ -49,8 +49,8 @@ export default function ProductDetail({ params }: any) {
           alert(`Failed to add to cart: ${errorText}`);
         }
       } else {
-        // Utiliser l'API de session pour les utilisateurs non connect√©s ou les produits sans variantes
-        // R√©cup√©rer l'ID de session depuis localStorage
+        // Utiliser l'API de session pour les utilisateurs non connect√s ou les produits sans variantes
+        // R√cup√rer l'ID de session depuis localStorage
         let sessionId = localStorage.getItem('sessionId');
         if (!sessionId) {
           sessionId = 'session-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
@@ -74,7 +74,7 @@ export default function ProductDetail({ params }: any) {
         
         if (response.ok) {
           const result = await response.json();
-          // Mettre √† jour l'ID de session si n√©cessaire
+          // Mettre √ jour l'ID de session si n√cessaire
           if (result.sessionId && result.sessionId !== sessionId) {
             localStorage.setItem('sessionId', result.sessionId);
           }
@@ -137,7 +137,7 @@ export default function ProductDetail({ params }: any) {
           </p>
           
           <div className="text-3xl font-bold text-gradient">
-            {Number(product.basePrice ?? product.variants?.[0]?.price ?? 0).toFixed(0)}‚Ç¨
+            {Number(product.basePrice ?? product.variants?.[0]?.price ?? 0).toFixed(0)}
           </div>
         </div>
 
