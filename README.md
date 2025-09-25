@@ -52,8 +52,6 @@ sneakershop/
 └── docker-compose.yml       # PostgreSQL database
 ```
 
-## 🚀 Quick Start
-
 ### Prerequisites
 - Node.js >= 20
 - Docker & Docker Compose
@@ -227,7 +225,7 @@ curl -I http://localhost:4000/health
 
 MIT License - see LICENSE file for details
 
-## 🤝 Contributing
+ Contributing
 
 1. Fork the repository
 2. Create a feature branch
@@ -235,10 +233,3 @@ MIT License - see LICENSE file for details
 4. Add tests if applicable
 5. Submit a pull request
 
-## 📞 Support
-
-For questions or issues, please open a GitHub issue or contact the development team.
-
----
-
-**Built with ❤️ using modern web technologies**
